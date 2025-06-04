@@ -1,6 +1,8 @@
+
 import React from 'react';
-import { ArrowDown, Github, Linkedin, Mail } from 'lucide-react';
+import { Github, Linkedin, Mail } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+
 const Hero = () => {
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -10,7 +12,9 @@ const Hero = () => {
       });
     }
   };
-  return <section id="home" className="min-h-screen flex items-center justify-center relative">
+
+  return (
+    <section id="home" className="min-h-screen flex items-center justify-center relative">
       <div className="max-w-4xl mx-auto text-center section-padding">
         <div className="animate-fade-in">
           <h1 className="text-5xl md:text-7xl font-bold mb-6 glow-text">RAJDEEP DAS</h1>
@@ -41,11 +45,9 @@ const Hero = () => {
             </a>
           </div>
         </div>
-
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 cursor-pointer animate-bounce" onClick={() => scrollToSection('about')}>
-          <ArrowDown size={32} className="text-space-cyan" />
-        </div>
       </div>
-    </section>;
+    </section>
+  );
 };
+
 export default Hero;

@@ -10,6 +10,7 @@ import Experience from '@/components/Experience';
 import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
 import ScrollToTop from '@/components/ScrollToTop';
+import Chatbot from '@/components/Chatbot';
 
 const Index = () => {
   return (
@@ -26,6 +27,7 @@ const Index = () => {
       </main>
       <Footer />
       <ScrollToTop />
+      <Chatbot />
     </div>
   );
 };

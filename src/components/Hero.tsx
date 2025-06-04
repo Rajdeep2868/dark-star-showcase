@@ -14,9 +14,7 @@ const Hero = () => {
       <div className="max-w-4xl mx-auto text-center section-padding">
         <div className="animate-fade-in">
           <h1 className="text-5xl md:text-7xl font-bold mb-6 glow-text">RAJDEEP DAS</h1>
-          <h2 className="text-xl md:text-2xl text-space-blue mb-8 font-mono">
-            Full-Stack Developer
-          </h2>
+          <h2 className="text-xl mb-8 font-mono font-medium text-[#56a5ff] md:text-3xl">Full-Stack Developer || Software Developer</h2>
           <p className="text-lg md:text-xl text-gray-300 mb-12 max-w-2xl mx-auto leading-relaxed">
             Crafting digital experiences across the galaxy of web development. 
             Passionate about creating scalable solutions with modern technologies.

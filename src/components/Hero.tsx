@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Github, Linkedin, Mail } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -14,7 +15,7 @@ const Hero = () => {
       <div className="max-w-4xl mx-auto text-center section-padding">
         <div className="animate-fade-in">
           {/* Profile Image Circle */}
-          <div className="mb-8 flex justify-center">
+          <div className="mb-4 flex justify-center">
             <div className="relative">
               <div className="w-48 h-48 md:w-56 md:h-56 rounded-full border-4 border-space-cyan bg-transparent shadow-2xl transform perspective-1000 hover:scale-105 transition-transform duration-300">
                 <div className="w-full h-full rounded-full overflow-hidden shadow-inner">

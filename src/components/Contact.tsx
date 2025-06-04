@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Mail, Phone, MapPin, Send } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import emailjs from '@emailjs/browser';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -12,18 +13,54 @@ const Contact = () => {
     email: '',
     message: ''
   });
+  const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Simulate form submission
-    toast({
-      title: "Message Sent! 🚀",
-      description: "Thank you for reaching out. I'll get back to you soon!",
-    });
-    
-    setFormData({ name: '', email: '', message: '' });
+    if (!formData.name || !formData.email || !formData.message) {
+      toast({
+        title: "Error",
+        description: "Please fill in all fields.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      // Replace these with your actual EmailJS service details
+      const serviceId = 'your_service_id';
+      const templateId = 'your_template_id';
+      const publicKey = 'your_public_key';
+
+      const templateParams = {
+        from_name: formData.name,
+        from_email: formData.email,
+        message: formData.message,
+        to_name: 'Rajdeep Das',
+      };
+
+      await emailjs.send(serviceId, templateId, templateParams, publicKey);
+      
+      toast({
+        title: "Message Sent! 🚀",
+        description: "Thank you for reaching out. I'll get back to you soon!",
+      });
+      
+      setFormData({ name: '', email: '', message: '' });
+    } catch (error) {
+      console.error('EmailJS error:', error);
+      toast({
+        title: "Error",
+        description: "Failed to send message. Please try again later.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -65,7 +102,7 @@ const Contact = () => {
                 </div>
                 <div>
                   <h4 className="font-semibold text-white">Email</h4>
-                  <p className="text-gray-300">alex.rivera@example.com</p>
+                  <p className="text-gray-300">rajdeepdas108@gmail.com</p>
                 </div>
               </div>
 
@@ -107,6 +144,7 @@ const Contact = () => {
                   onChange={handleChange}
                   className="bg-space-medium/50 border-space-medium/50 text-white placeholder-gray-400 focus:border-space-cyan"
                   placeholder="John Doe"
+                  disabled={isLoading}
                 />
               </div>
 
@@ -123,6 +161,7 @@ const Contact = () => {
                   onChange={handleChange}
                   className="bg-space-medium/50 border-space-medium/50 text-white placeholder-gray-400 focus:border-space-cyan"
                   placeholder="john@example.com"
+                  disabled={isLoading}
                 />
               </div>
 
@@ -139,15 +178,17 @@ const Contact = () => {
                   onChange={handleChange}
                   className="bg-space-medium/50 border-space-medium/50 text-white placeholder-gray-400 focus:border-space-cyan resize-none"
                   placeholder="Tell me about your project or just say hello!"
+                  disabled={isLoading}
                 />
               </div>
 
               <Button
                 type="submit"
-                className="w-full bg-space-cyan text-space-dark hover:bg-space-cyan/90 font-semibold py-3"
+                disabled={isLoading}
+                className="w-full bg-space-cyan text-space-dark hover:bg-space-cyan/90 font-semibold py-3 disabled:opacity-50"
               >
                 <Send size={18} className="mr-2" />
-                Send Message
+                {isLoading ? 'Sending...' : 'Send Message'}
               </Button>
             </form>
           </div>

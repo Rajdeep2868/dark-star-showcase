@@ -3,7 +3,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { MessageCircle, X, Send, Bot } from 'lucide-react';
+import { MessageCircle, X, Send, Bot, Settings } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface Message {
@@ -15,10 +15,12 @@ interface Message {
 
 const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
+  const [apiKey, setApiKey] = useState('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');
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: "Hi! I'm Rajdeep's AI assistant. I can help answer questions about his skills, projects, and experience. What would you like to know?",
+      text: "Hi! I'm Rajdeep's AI assistant powered by OpenAI. I can help answer questions about his skills, projects, and experience. What would you like to know?",
       isUser: false,
       timestamp: new Date()
     }
@@ -36,35 +38,90 @@ const Chatbot = () => {
     scrollToBottom();
   }, [messages]);
 
-  const getAIResponse = async (userMessage: string): Promise<string> => {
-    // Simple keyword-based responses about your portfolio
-    const lowerMessage = userMessage.toLowerCase();
-    
-    if (lowerMessage.includes('skill') || lowerMessage.includes('technology') || lowerMessage.includes('tech')) {
-      return "Rajdeep is skilled in React, TypeScript, JavaScript, Node.js, Python, and various modern web technologies. He's passionate about creating innovative solutions and has experience with both frontend and backend development.";
+  // Load API key from localStorage on component mount
+  useEffect(() => {
+    const savedApiKey = localStorage.getItem('openai_api_key');
+    if (savedApiKey) {
+      setApiKey(savedApiKey);
     }
-    
-    if (lowerMessage.includes('project') || lowerMessage.includes('work') || lowerMessage.includes('portfolio')) {
-      return "Rajdeep has worked on various exciting projects including web applications, mobile apps, and AI-powered solutions. You can check out his projects section to see his latest work and contributions.";
+  }, []);
+
+  const saveApiKey = () => {
+    localStorage.setItem('openai_api_key', apiKey);
+    setShowSettings(false);
+    toast({
+      title: "Success",
+      description: "OpenAI API key saved successfully!",
+    });
+  };
+
+  const getOpenAIResponse = async (userMessage: string): Promise<string> => {
+    if (!apiKey.trim()) {
+      throw new Error('OpenAI API key is required');
     }
-    
-    if (lowerMessage.includes('experience') || lowerMessage.includes('job') || lowerMessage.includes('career')) {
-      return "Rajdeep has experience in full-stack development and has worked on multiple projects that showcase his technical expertise. He's always eager to take on new challenges and collaborate on innovative solutions.";
+
+    const systemPrompt = `You are Rajdeep's AI assistant. You help visitors learn about Rajdeep's professional background. Here's what you know about Rajdeep:
+
+SKILLS & TECHNOLOGIES:
+- Frontend: React, TypeScript, JavaScript, HTML5, CSS3, Tailwind CSS
+- Backend: Node.js, Python, Express.js
+- Databases: MongoDB, PostgreSQL, MySQL
+- Cloud: AWS, Google Cloud Platform
+- Tools: Git, Docker, VS Code
+- Other: RESTful APIs, GraphQL, responsive design
+
+EXPERIENCE:
+- Full-stack developer with experience in modern web technologies
+- Passionate about creating innovative and user-friendly solutions
+- Experience with both frontend and backend development
+- Strong problem-solving skills and attention to detail
+
+PROJECTS:
+- Various web applications showcasing modern development practices
+- Portfolio website demonstrating design and development skills
+- Experience with AI-powered solutions and chatbot integration
+
+CONTACT:
+- Email: drajdeep00108@gmail.com
+- Available for new opportunities and collaborations
+
+Keep your responses helpful, professional, and focused on Rajdeep's qualifications. If asked about something you don't know, suggest contacting Rajdeep directly.`;
+
+    try {
+      const response = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${apiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: 'gpt-4o-mini',
+          messages: [
+            {
+              role: 'system',
+              content: systemPrompt
+            },
+            {
+              role: 'user',
+              content: userMessage
+            }
+          ],
+          temperature: 0.7,
+          max_tokens: 500,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error?.message || 'Failed to get response from OpenAI');
+      }
+
+      const data = await response.json();
+      return data.choices[0]?.message?.content || 'Sorry, I couldn\'t generate a response.';
+    } catch (error) {
+      console.error('OpenAI API Error:', error);
+      throw error;
     }
-    
-    if (lowerMessage.includes('contact') || lowerMessage.includes('hire') || lowerMessage.includes('reach')) {
-      return "You can contact Rajdeep at drajdeep00108@gmail.com or use the contact form on this website. He's always open to discussing new opportunities and collaborations!";
-    }
-    
-    if (lowerMessage.includes('hello') || lowerMessage.includes('hi') || lowerMessage.includes('hey')) {
-      return "Hello! Nice to meet you! I'm here to help you learn more about Rajdeep's skills and experience. What specific area would you like to know about?";
-    }
-    
-    if (lowerMessage.includes('education') || lowerMessage.includes('study') || lowerMessage.includes('degree')) {
-      return "Rajdeep has a strong educational background in computer science and is continuously learning new technologies to stay updated with industry trends.";
-    }
-    
-    return "That's an interesting question! While I can tell you about Rajdeep's skills, projects, and experience, I'd recommend reaching out to him directly for more specific information. You can contact him through the contact form on this website.";
   };
 
   const handleSendMessage = async () => {
@@ -82,7 +139,7 @@ const Chatbot = () => {
     setIsLoading(true);
 
     try {
-      const aiResponse = await getAIResponse(inputMessage);
+      const aiResponse = await getOpenAIResponse(inputMessage);
       
       const aiMessage: Message = {
         id: (Date.now() + 1).toString(),
@@ -96,7 +153,7 @@ const Chatbot = () => {
       console.error('Error getting AI response:', error);
       toast({
         title: "Error",
-        description: "Sorry, I'm having trouble responding right now. Please try again.",
+        description: error instanceof Error ? error.message : "Sorry, I'm having trouble responding right now. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -132,18 +189,51 @@ const Chatbot = () => {
                 <Bot size={20} />
                 AI Assistant
               </CardTitle>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => setIsOpen(false)}
-                className="text-gray-400 hover:text-white h-8 w-8"
-              >
-                <X size={16} />
-              </Button>
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setShowSettings(!showSettings)}
+                  className="text-gray-400 hover:text-white h-8 w-8"
+                >
+                  <Settings size={16} />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setIsOpen(false)}
+                  className="text-gray-400 hover:text-white h-8 w-8"
+                >
+                  <X size={16} />
+                </Button>
+              </div>
             </div>
           </CardHeader>
 
           <CardContent className="flex-1 flex flex-col p-4 pt-0">
+            {/* Settings Panel */}
+            {showSettings && (
+              <div className="mb-4 p-3 bg-space-medium/30 rounded-lg border border-space-medium/50">
+                <h4 className="text-sm text-space-cyan mb-2">OpenAI API Key</h4>
+                <div className="flex gap-2">
+                  <Input
+                    type="password"
+                    value={apiKey}
+                    onChange={(e) => setApiKey(e.target.value)}
+                    placeholder="Enter your OpenAI API key"
+                    className="bg-space-medium/50 border-space-medium/50 text-white placeholder-gray-400 text-xs"
+                  />
+                  <Button
+                    onClick={saveApiKey}
+                    size="sm"
+                    className="bg-space-cyan text-space-dark hover:bg-space-cyan/90"
+                  >
+                    Save
+                  </Button>
+                </div>
+              </div>
+            )}
+
             {/* Messages */}
             <div className="flex-1 overflow-y-auto space-y-4 mb-4">
               {messages.map((message) => (

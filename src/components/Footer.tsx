@@ -8,7 +8,7 @@ const Footer = () => {
       <div className="max-w-6xl mx-auto section-padding">
         <div className="text-center">
           <div className="mb-8">
-            <h3 className="text-2xl font-bold mb-4 text-space-cyan glow-text">Alex Rivera</h3>
+            <h3 className="text-2xl font-bold mb-4 text-space-cyan glow-text">RAJDEEP DAS</h3>
             <p className="text-gray-300 max-w-md mx-auto">
               Full-Stack Developer passionate about creating stellar digital experiences
             </p>
@@ -49,7 +49,7 @@ const Footer = () => {
 
           <div className="border-t border-space-medium/30 pt-8">
             <p className="text-gray-400 text-sm flex items-center justify-center gap-2">
-              Made with <Heart size={16} className="text-space-pink animate-pulse" /> by Alex Rivera © 2024
+              Made with <Heart size={16} className="text-space-pink animate-pulse" /> by RAJDEEP DAS © 2024
             </p>
             <p className="text-gray-500 text-xs mt-2">
               Designed & Developed in the Digital Galaxy

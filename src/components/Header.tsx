@@ -19,7 +19,7 @@ const Header = () => {
       <div className="max-w-7xl mx-auto section-padding py-4">
         <div className="flex items-center justify-between">
           <div className="font-bold text-xl text-space-cyan glow-text">
-            Alex Rivera
+            RAJDEEP DAS
           </div>
           
           <nav className="hidden md:flex space-x-8">

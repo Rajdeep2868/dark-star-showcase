@@ -44,13 +44,13 @@ const Hero = () => {
           </div>
 
           <div className="flex justify-center space-x-6">
-            <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-space-cyan transition-colors duration-300 transform hover:scale-110">
+            <a href="https://github.com/rajdeepdas108" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-space-cyan transition-colors duration-300 transform hover:scale-110">
               <Github size={24} />
             </a>
-            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-space-blue transition-colors duration-300 transform hover:scale-110">
+            <a href="https://www.linkedin.com/in/rajdeepdas108/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-space-blue transition-colors duration-300 transform hover:scale-110">
               <Linkedin size={24} />
             </a>
-            <a href="mailto:alex@example.com" className="text-gray-400 hover:text-space-pink transition-colors duration-300 transform hover:scale-110">
+            <a href="mailto:rajdeepdas108@gmail.com" className="text-gray-400 hover:text-space-pink transition-colors duration-300 transform hover:scale-110">
               <Mail size={24} />
             </a>
           </div>

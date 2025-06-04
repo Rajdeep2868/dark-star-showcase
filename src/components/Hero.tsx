@@ -20,7 +20,7 @@ const Hero = () => {
           {/* Profile Image Circle */}
           <div className="mb-8 flex justify-center">
             <div className="relative">
-              <div className="w-48 h-48 md:w-56 md:h-56 rounded-full border-4 border-space-cyan bg-transparent shadow-2xl transform perspective-1000 hover:scale-105 transition-transform duration-300">
+              <div className="w-48 h-48 md:w-56 md:h-56 rounded-full border-4 border-space-cyan bg-transparent shadow-2xl transform perspective-1000 hover:scale-105 transition-transform duration-300 animate-gentle-float">
                 <div className="w-full h-full rounded-full overflow-hidden shadow-inner">
                   <img src="/lovable-uploads/668b6126-bf25-4b09-a5a6-84a72f67c9cd.png" alt="Rajdeep Das Profile" className="w-full h-full object-cover" />
                 </div>

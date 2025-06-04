@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -116,8 +117,8 @@
     @apply px-4 md:px-8 lg:px-16 xl:px-24;
   }
 
-  .animate-float {
-    animation: float 12s ease-in-out infinite;
+  .animate-gentle-float {
+    animation: gentleFloat 15s ease-in-out infinite;
   }
 }
 
@@ -151,11 +152,11 @@
   }
 }
 
-@keyframes float {
+@keyframes gentleFloat {
   0%, 100% {
     transform: translateY(0px);
   }
   50% {
-    transform: translateY(-20px);
+    transform: translateY(-10px);
   }
 }

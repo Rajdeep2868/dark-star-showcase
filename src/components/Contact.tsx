@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -31,10 +30,9 @@ const Contact = () => {
     setIsLoading(true);
 
     try {
-      // Replace these with your actual EmailJS service details
-      const serviceId = 'your_service_id';
-      const templateId = 'your_template_id';
-      const publicKey = 'your_public_key';
+      const serviceId = 'service_nv4txtl';
+      const templateId = 'template_vda7ydw';
+      const publicKey = '9aLUYjwYFfhS4it66';
 
       const templateParams = {
         from_name: formData.name,
